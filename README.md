@@ -45,6 +45,20 @@ npm run build
 npm run preview
 ```
 
+## Vercel 배포
+
+Vercel에 바로 배포할 수 있습니다. 이 저장소에는 [vercel.json](vercel.json) 설정이 포함되어 있어 자동으로 `npm run build` 후 `dist`를 정적 배포합니다.
+
+1. Vercel에서 New Project → GitHub의 `siwoo281/SpeakCheck` 선택
+2. Framework: `Other` (자동 감지됨), Build Command: `npm run build`, Output Directory: `dist`
+3. 환경변수 필요 시 Dashboard에서 설정 (로컬의 `.env.local`는 Git에 커밋되지 않음)
+4. 배포 후 SPA 라우팅은 `rewrites`로 `/index.html`로 안전하게 포워딩됩니다
+
+CI 없이 수동 배포 명령:
+```bash
+vercel --prod
+```
+
 ## PWA 설치
 
 1. 지원 브라우저(Chrome, Edge, Safari 등)에서 앱 접속
