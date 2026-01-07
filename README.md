@@ -1,4 +1,4 @@
-# Presentation Prep Pro
+# StageReady
 
 프레젠테이션 준비를 위한 종합 도구 - PWA 지원
 
