@@ -9,8 +9,18 @@ import { INITIAL_CHECKLIST, INITIAL_EXERCISES, INITIAL_NOTES } from './constants
 import { Tab, Exercise, ChecklistItem, NoteSection, UserCondition } from './types';
 import { setupBackButtonHandler, isAndroid } from './androidUtils';
 
-// LocalStorage 키 상수
+// LocalStorage 키 상수 (SpeakCheck)
 const STORAGE_KEYS = {
+  SHOW_LANDING: 'speakcheck_showLanding',
+  CURRENT_TAB: 'speakcheck_currentTab',
+  USER_CONDITION: 'speakcheck_userCondition',
+  EXERCISES: 'speakcheck_exercises',
+  CHECKLIST: 'speakcheck_checklist',
+  NOTES: 'speakcheck_notes',
+};
+
+// 기존 키 (마이그레이션/호환 목적)
+const LEGACY_KEYS = {
   SHOW_LANDING: 'presentationPro_showLanding',
   CURRENT_TAB: 'presentationPro_currentTab',
   USER_CONDITION: 'presentationPro_userCondition',
@@ -22,35 +32,66 @@ const STORAGE_KEYS = {
 const App: React.FC = () => {
   // LocalStorage에서 초기 상태 복원
   const [showLanding, setShowLanding] = useState<boolean>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.SHOW_LANDING);
+    const savedNew = localStorage.getItem(STORAGE_KEYS.SHOW_LANDING);
+    const savedLegacy = localStorage.getItem(LEGACY_KEYS.SHOW_LANDING);
+    const saved = savedNew ?? savedLegacy;
     return saved !== null ? JSON.parse(saved) : true;
   });
   
   const [currentTab, setCurrentTab] = useState<Tab>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_TAB);
+    const savedNew = localStorage.getItem(STORAGE_KEYS.CURRENT_TAB);
+    const savedLegacy = localStorage.getItem(LEGACY_KEYS.CURRENT_TAB);
+    const saved = savedNew ?? savedLegacy;
     return (saved as Tab) || 'warmup';
   });
   
   const [userCondition, setUserCondition] = useState<UserCondition | null>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.USER_CONDITION);
+    const savedNew = localStorage.getItem(STORAGE_KEYS.USER_CONDITION);
+    const savedLegacy = localStorage.getItem(LEGACY_KEYS.USER_CONDITION);
+    const saved = savedNew ?? savedLegacy;
     return saved ? (saved as UserCondition) : null;
   });
 
   // 상태를 상위로 끌어올려 탭 전환 시에도 데이터가 유지되도록 함
   const [exercises, setExercises] = useState<Exercise[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.EXERCISES);
+    const savedNew = localStorage.getItem(STORAGE_KEYS.EXERCISES);
+    const savedLegacy = localStorage.getItem(LEGACY_KEYS.EXERCISES);
+    const saved = savedNew ?? savedLegacy;
     return saved ? JSON.parse(saved) : INITIAL_EXERCISES;
   });
   
   const [checklistItems, setChecklistItems] = useState<ChecklistItem[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.CHECKLIST);
+    const savedNew = localStorage.getItem(STORAGE_KEYS.CHECKLIST);
+    const savedLegacy = localStorage.getItem(LEGACY_KEYS.CHECKLIST);
+    const saved = savedNew ?? savedLegacy;
     return saved ? JSON.parse(saved) : INITIAL_CHECKLIST;
   });
   
   const [notes, setNotes] = useState<NoteSection[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.NOTES);
+    const savedNew = localStorage.getItem(STORAGE_KEYS.NOTES);
+    const savedLegacy = localStorage.getItem(LEGACY_KEYS.NOTES);
+    const saved = savedNew ?? savedLegacy;
     return saved ? JSON.parse(saved) : INITIAL_NOTES;
   });
+
+  // 최초 로드 시 레거시 키를 신규 키로 마이그레이션 후 정리
+  useEffect(() => {
+    const migrateKey = (newKey: string, legacyKey: string) => {
+      const legacyVal = localStorage.getItem(legacyKey);
+      if (legacyVal !== null && localStorage.getItem(newKey) === null) {
+        localStorage.setItem(newKey, legacyVal);
+      }
+    };
+    migrateKey(STORAGE_KEYS.SHOW_LANDING, LEGACY_KEYS.SHOW_LANDING);
+    migrateKey(STORAGE_KEYS.CURRENT_TAB, LEGACY_KEYS.CURRENT_TAB);
+    migrateKey(STORAGE_KEYS.USER_CONDITION, LEGACY_KEYS.USER_CONDITION);
+    migrateKey(STORAGE_KEYS.EXERCISES, LEGACY_KEYS.EXERCISES);
+    migrateKey(STORAGE_KEYS.CHECKLIST, LEGACY_KEYS.CHECKLIST);
+    migrateKey(STORAGE_KEYS.NOTES, LEGACY_KEYS.NOTES);
+
+    // 레거시 키 제거
+    Object.values(LEGACY_KEYS).forEach((k) => localStorage.removeItem(k));
+  }, []);
 
   // Android 뒤로가기 버튼 핸들링
   useEffect(() => {
