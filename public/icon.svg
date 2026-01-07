@@ -1,0 +1,23 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <rect width="512" height="512" rx="128" fill="url(#gradient)"/>
+  
+  <!-- Microphone icon -->
+  <path d="M256 320C291.346 320 320 291.346 320 256V160C320 124.654 291.346 96 256 96C220.654 96 192 124.654 192 160V256C192 291.346 220.654 320 256 320Z" fill="white"/>
+  
+  <!-- Microphone stand -->
+  <path d="M256 352C203.076 352 160 308.924 160 256H128C128 321.856 177.472 376.096 240 385.632V432H192V464H320V432H272V385.632C334.528 376.096 384 321.856 384 256H352C352 308.924 308.924 352 256 352Z" fill="white"/>
+  
+  <!-- Sound wave accent -->
+  <circle cx="128" cy="256" r="8" fill="#99F6E4" opacity="0.6"/>
+  <circle cx="384" cy="256" r="8" fill="#99F6E4" opacity="0.6"/>
+  <circle cx="96" cy="256" r="6" fill="#99F6E4" opacity="0.4"/>
+  <circle cx="416" cy="256" r="6" fill="#99F6E4" opacity="0.4"/>
+  
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2DD4BF"/>
+      <stop offset="100%" stop-color="#0D9488"/>
+    </linearGradient>
+  </defs>
+</svg>

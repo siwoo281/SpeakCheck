@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description" content="프레젠테이션 준비를 위한 종합 도구 - 목 풀기, 체크리스트, 발표 노트" />
+    <meta name="theme-color" content="#2DD4BF" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0A0A0A" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#2DD4BF" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <title>Presentation Prep Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              background: '#121212',
+              surface: '#1E1E1E',
+              'teal-start': '#2DD4BF',
+              'teal-end': '#99F6E4',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+          },
+        },
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Inter', 'Noto Sans KR', sans-serif;
+        background-color: #0A0A0A;
+        color: white;
+        /* iOS 최적화: 오버스크롤 bounce 방지 */
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: touch;
+        /* 터치 하이라이트 제거 */
+        -webkit-tap-highlight-color: transparent;
+        /* 사용자 선택 방지 (UI 요소용) */
+        -webkit-user-select: none;
+        user-select: none;
+        /* iOS Safari safe area 대응 */
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      }
+      
+      /* 텍스트는 선택 가능하게 */
+      p, span, h1, h2, h3, h4, h5, h6, li, input, textarea {
+        -webkit-user-select: text;
+        user-select: text;
+      }
+      
+      /* 모바일 입력 필드 최적화 */
+      input, textarea, select {
+        font-size: 16px; /* iOS 자동 줌 방지 */
+        -webkit-appearance: none;
+        appearance: none;
+      }
+      
+      /* 터치 영역 최소 크기 확보 (44x44px - Apple 권장) */
+      button, a, [role="button"] {
+        min-height: 44px;
+        min-width: 44px;
+        touch-action: manipulation; /* 더블탭 줌 방지 */
+      }
+      
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      .no-scrollbar::-webkit-scrollbar {
+          display: none;
+      }
+      /* Hide scrollbar for IE, Edge and Firefox */
+      .no-scrollbar {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+      }
+      
+      /* Material Symbols Icon Configuration */
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      
+      /* Icon Gradient Effect */
+      .icon-gradient {
+        background: linear-gradient(135deg, #2DD4BF 0%, #99F6E4 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+      }
+      
+      /* Landing Page Animations */
+      @keyframes subtleFadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-enter {
+        animation: subtleFadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        opacity: 0;
+      }
+      .delay-100 { animation-delay: 0.15s; }
+      .delay-200 { animation-delay: 0.3s; }
+      .delay-300 { animation-delay: 0.45s; }
+      
+      /* 모바일 성능 최적화 */
+      * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      /* 하드웨어 가속 최적화 */
+      .animate-in, .transition-all, .hover\:scale-\[1\.01\] {
+        will-change: transform;
+      }
+      
+      /* 안전 영역 여백 (iOS notch 대응) */
+      .safe-top {
+        padding-top: max(1rem, env(safe-area-inset-top));
+      }
+      .safe-bottom {
+        padding-bottom: max(1rem, env(safe-area-inset-bottom));
+      }
+      
+      /* 모바일 뷰포트 높이 최적화 (주소창 대응) */
+      @supports (-webkit-touch-callout: none) {
+        .min-h-screen {
+          min-height: -webkit-fill-available;
+        }
+      }
+      
+      /* 작은 화면에서 폰트 크기 조정 */
+      @media (max-width: 375px) {
+        html {
+          font-size: 14px;
+        }
+      }
+      
+      /* Android 최적화 */
+      /* Material Design 최소 터치 타곟: 48dp */
+      @media (pointer: coarse) {
+        button, a, [role="button"], input[type="checkbox"], input[type="radio"] {
+          min-height: 48px;
+          min-width: 48px;
+        }
+      }
+      
+      /* Android Chrome 풀스크린 모드 지원 */
+      @media (display-mode: fullscreen) {
+        body {
+          padding-top: 0;
+        }
+      }
+      
+      /* Android 드래그 스크롤 최적화 */
+      * {
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      /* Android Back button 준비 (history 관리) */
+      @supports (-webkit-touch-callout: none) {
+        /* iOS only */
+      }
+      @supports not (-webkit-touch-callout: none) {
+        /* Android: 터치 피드백 최적화 */
+        button:active, a:active, [role="button"]:active {
+          transform: scale(0.96);
+        }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
