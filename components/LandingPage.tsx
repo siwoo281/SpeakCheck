@@ -38,7 +38,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
           {/* Title Section with Modern Typography */}
           <div className="space-y-4">
             <div className="inline-block px-4 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20 backdrop-blur-sm mb-3">
-              <span className="text-teal-300 text-xs font-semibold tracking-wider uppercase">StageReady</span>
+              <span className="text-teal-300 text-xs font-semibold tracking-wider uppercase">SpeakCheck</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black leading-tight text-white px-4 tracking-tight">
               <span className="block mb-2 text-gray-400 text-2xl font-normal tracking-wide">프레젠테이션은</span>

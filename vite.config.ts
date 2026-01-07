@@ -15,8 +15,8 @@ export default defineConfig(() => {
           registerType: 'autoUpdate',
           includeAssets: ['favicon.ico'],
           manifest: {
-            name: 'StageReady',
-            short_name: 'StageReady',
+            name: 'SpeakCheck',
+            short_name: 'SpeakCheck',
             description: '프레젠테이션 준비를 위한 종합 도구 - 목 풀기, 체크리스트, 발표 노트',
             theme_color: '#2DD4BF',
             background_color: '#0A0A0A',
